@@ -1,0 +1,22 @@
+{
+  "name": "深圳浪骑瞻云度假酒店 · 故事地图",
+  "short_name": "浪骑故事地图",
+  "description": "深圳浪骑瞻云度假酒店平面图故事导览与打卡",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "images/floor-plan.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "images/floor-plan.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ]
+}

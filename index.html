@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#ffffff">
+  <title>深圳浪骑瞻云度假酒店 · 故事地图</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="css/style.css?v=1">
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var img = document.getElementById('mapImage');
+      var wrapper = document.getElementById('mapWrapper');
+      var container = document.getElementById('mapContainer');
+      function fitInitial() {
+        if (!img.naturalWidth || !container || !wrapper) return;
+        var cw = container.clientWidth;
+        var ch = container.clientHeight;
+        var scale = Math.min(cw / img.naturalWidth, ch / img.naturalHeight) * 0.95;
+        scale = Math.max(0.5, Math.min(scale, 4));
+        var x = (cw - img.naturalWidth * scale) / 2;
+        var y = (ch - img.naturalHeight * scale) / 2;
+        wrapper.style.transform = 'translate(' + x + 'px, ' + y + 'px) scale(' + scale + ')';
+      }
+      if (img.complete) fitInitial();
+      else img.addEventListener('load', fitInitial);
+    });
+  </script>
+</head>
+<body>
+  <div id="app">
+    <header class="top-bar">
+      <div class="hotel-info">
+        <h1>深圳浪骑瞻云度假酒店</h1>
+        <span class="subtitle">故事地图</span>
+      </div>
+      <div class="top-actions">
+        <button class="voice-settings-btn" id="voiceSettingsBtn" title="语音播报设置">
+          <span id="voiceIcon">🔊</span>
+        </button>
+        <div class="progress" id="progressWrap" title="点击查看成果">
+          <span id="progressText">0/8</span>
+        </div>
+        <button class="reset-btn" id="resetBtn" title="重置全部打卡记录">🔄</button>
+      </div>
+    </header>
+
+    <main class="map-container" id="mapContainer">
+      <div class="map-loading" id="mapLoading">平面图加载中…</div>
+      <div class="map-wrapper" id="mapWrapper">
+        <img
+          src="images/floor-plan.jpg"
+          alt="深圳浪骑瞻云度假酒店平面图"
+          class="map-image"
+          id="mapImage"
+          draggable="false"
+        >
+        <div class="hotspots-layer" id="hotspotsLayer"></div>
+      </div>
+    </main>
+
+    <div class="story-sheet" id="storySheet">
+      <div class="sheet-handle"></div>
+      <div class="sheet-content">
+        <div class="story-cards" id="storyCards">
+          <button class="card-nav card-prev" id="cardPrev" title="上一张" aria-label="上一张">‹</button>
+          <div class="story-cards-track" id="storyCardsTrack"></div>
+          <button class="card-nav card-next" id="cardNext" title="下一张" aria-label="下一张">›</button>
+        </div>
+        <div class="card-dots" id="cardDots"></div>
+        <div class="audio-controls" id="audioControls">
+          <button class="audio-play-btn" id="audioPlayBtn" title="播放/暂停">▶</button>
+          <span class="audio-current" id="audioCurrent">0:00</span>
+          <input type="range" class="audio-progress" id="audioProgress" min="0" max="100" value="0" step="0.1">
+          <span class="audio-duration" id="audioDuration">0:00</span>
+        </div>
+        <div class="story-actions">
+          <button class="check-in-btn" id="checkInBtn">
+            <span class="btn-icon">📍</span>
+            <span class="btn-text">打卡</span>
+          </button>
+          <button class="nav-btn" id="prevBtn">上一个</button>
+          <button class="nav-btn" id="nextBtn">下一个</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal" id="resultModal">
+      <div class="modal-content result-content">
+        <div class="modal-header">
+          <h3>我的探索成果</h3>
+          <button class="close-btn" id="closeResultModal">×</button>
+        </div>
+        <div class="result-body">
+          <div class="result-stats">
+            <div class="stat-number" id="resultCount">0</div>
+            <div class="stat-label">已打卡故事点</div>
+          </div>
+          <div class="result-categories" id="resultCategories"></div>
+          <div class="result-points" id="resultPoints"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal" id="certificateModal">
+      <div class="modal-content certificate-content">
+        <div class="modal-header">
+          <h3>探索认证</h3>
+          <button class="close-btn" id="closeCertificateModal">×</button>
+        </div>
+        <div class="certificate-body">
+          <div class="certificate-card" id="certificateCard">
+            <div class="cert-hotel">深圳浪骑瞻云度假酒店</div>
+            <div class="cert-title">故事探索认证</div>
+            <div class="cert-subtitle">CERTIFICATE OF EXPLORATION</div>
+            <div class="cert-divider"></div>
+            <div class="cert-icon">🏅</div>
+            <div class="cert-name" id="certName">探索者</div>
+            <div class="cert-desc">
+              已完成全部 <strong id="certCount">8</strong> 个故事点探索
+            </div>
+            <div class="cert-date" id="certDate">2026.07.15</div>
+            <div class="cert-no" id="certNo">NO. 0001</div>
+            <div class="cert-seal">瞻云</div>
+          </div>
+          <div class="certificate-form">
+            <label>您的名字</label>
+            <input type="text" id="certNameInput" placeholder="输入名字" maxlength="10">
+            <button class="btn-primary" id="updateCertNameBtn">更新证书</button>
+            <button class="btn-secondary" id="downloadCertBtn">保存图片</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal" id="badgeModal">
+      <div class="modal-content badge-content">
+        <div class="badge-icon" id="badgeIcon">🏅</div>
+        <h3 id="badgeTitle">获得徽章</h3>
+        <p id="badgeDesc">描述</p>
+        <button class="start-btn" id="closeBadgeModal">太棒了</button>
+      </div>
+    </div>
+
+    <div class="modal" id="voiceModal">
+      <div class="modal-content voice-content">
+        <div class="modal-header">
+          <h3>语音播报设置</h3>
+          <button class="close-btn" id="closeVoiceModal">×</button>
+        </div>
+        <div class="voice-body">
+          <div class="voice-option">
+            <label>播报模式</label>
+            <div class="voice-mode-group" id="voiceModeGroup">
+              <button type="button" class="voice-mode-btn" data-mode="off">关闭</button>
+              <button type="button" class="voice-mode-btn" data-mode="click">点击播报</button>
+              <button type="button" class="voice-mode-btn" data-mode="auto">自动播报</button>
+            </div>
+          </div>
+
+          <div class="voice-option">
+            <label for="voiceVolume">音量 <span id="voiceVolumeValue">100%</span></label>
+            <input type="range" id="voiceVolume" min="0" max="1" step="0.05" value="1">
+            <div class="voice-rate-labels">
+              <span>静音</span>
+              <span>50%</span>
+              <span>最大</span>
+            </div>
+          </div>
+
+          <button class="voice-test-btn" id="voiceTestBtn">试听效果</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <div class="modal" id="avatarModal">
+      <div class="modal-content avatar-content">
+        <h3>选择你的探索头像</h3>
+        <p>打卡后故事点会显示为你选择的头像</p>
+        <div class="avatar-grid" id="avatarGrid"></div>
+        <button class="start-btn" id="confirmAvatarBtn">开始探索</button>
+      </div>
+    </div>
+
+    <div class="splash" id="splash">
+      <div class="splash-content">
+        <h1>深圳浪骑瞻云度假酒店</h1>
+        <p>故事地图</p>
+        <button class="start-btn" id="startBtn">开始探索</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="data/points.js?v=1"></script>
+  <script src="js/app.js?v=1"></script>
+</body>
+</html>

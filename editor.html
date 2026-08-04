@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>深圳浪骑瞻云度假酒店 · 故事点编辑后台</title>
+  <link rel="stylesheet" href="css/editor.css?v=1">
+</head>
+<body>
+  <div id="editor">
+    <header class="editor-header">
+      <div class="editor-title">
+        <h1>故事点编辑后台</h1>
+        <span class="hotel-name">深圳浪骑瞻云度假酒店</span>
+      </div>
+      <div class="editor-tools">
+        <button class="tool-btn" id="addPointBtn" title="添加故事点">
+          <span>📍</span> 添加点
+        </button>
+        <button class="tool-btn secondary" id="previewBtn" title="预览">
+          <span>👁</span> 预览
+        </button>
+        <button class="tool-btn primary" id="exportBtn" title="导出数据">
+          <span>💾</span> 导出
+        </button>
+      </div>
+    </header>
+
+    <div class="editor-body">
+      <div class="map-section">
+        <div class="map-toolbar">
+          <span class="hint" id="editorHint">点击"添加点"后在地图上点击放置</span>
+          <button class="icon-btn" id="fitMapBtn" title="重置视图">⌂</button>
+          <button class="icon-btn" id="zoomInBtn" title="放大">+</button>
+          <button class="icon-btn" id="zoomOutBtn" title="缩小">−</button>
+        </div>
+        <div class="map-container" id="mapContainer">
+          <div class="map-wrapper" id="mapWrapper">
+            <img
+              src="images/floor-plan.jpg"
+              alt="深圳浪骑瞻云度假酒店平面图"
+              class="map-image"
+              id="mapImage"
+              draggable="false"
+            >
+            <div class="hotspots-layer" id="hotspotsLayer"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="properties-panel" id="propertiesPanel">
+        <div class="panel-empty" id="panelEmpty">
+          <div class="panel-guide">
+            <h4>📝 编辑后台使用指南</h4>
+            <ol>
+              <li>点击顶部 <strong>「添加点」</strong>，然后在地图上点击放置新故事点</li>
+              <li>点击地图上的标记，在右侧编辑标题、分类、区域、摘要、故事、图片和音频</li>
+              <li>直接拖动标记可调整位置，或在右侧输入精确坐标</li>
+              <li>编辑完成后点击顶部 <strong>「导出」</strong>，下载 points.js 替换原文件</li>
+            </ol>
+          </div>
+        </div>
+
+        <form class="panel-form" id="panelForm">
+          <div class="form-group">
+            <label for="pId">ID</label>
+            <input type="text" id="pId" readonly>
+          </div>
+
+          <div class="form-group">
+            <label for="pName">点位名称</label>
+            <input type="text" id="pName" placeholder="例如：直升机、无边际泳池">
+          </div>
+
+          <div class="form-group">
+            <div class="cards-header">
+              <label>故事卡片</label>
+              <button type="button" class="btn-small" id="addCardBtn">+ 添加卡片</button>
+            </div>
+            <div id="pCards"></div>
+          </div>
+
+          <div class="form-row coords">
+            <div class="form-group">
+              <label>坐标 X</label>
+              <input type="number" id="pX" step="0.0001" min="0" max="1">
+            </div>
+            <div class="form-group">
+              <label>坐标 Y</label>
+              <input type="number" id="pY" step="0.0001" min="0" max="1">
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn-secondary" id="deleteBtn">删除</button>
+            <button type="button" class="btn-primary" id="saveBtn">保存</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="modal" id="exportModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>导出数据</h3>
+          <button class="close-btn" id="closeExportModal">×</button>
+        </div>
+        <div class="modal-body">
+          <div class="export-steps">
+            <h4>导出后替换文件</h4>
+            <ol>
+              <li>点击 <strong>points.js</strong> 下载数据文件</li>
+              <li>将下载的文件重命名为 <code>points.js</code></li>
+              <li>替换项目 <code>data/points.js</code> 文件</li>
+              <li>如需备份，可同时下载 <strong>points.json</strong></li>
+            </ol>
+          </div>
+          <div class="export-list">
+            <button class="export-item" id="exportJsonBtn">
+              <strong>points.json</strong>
+              <span>数据备份</span>
+            </button>
+            <button class="export-item primary" id="exportJsBtn">
+              <strong>points.js</strong>
+              <span>前端运行文件 ⬇</span>
+            </button>
+          </div>
+          <div class="export-preview">
+            <label>数据预览（JSON）</label>
+            <textarea id="exportPreview" rows="12" readonly></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal" id="confirmModal">
+      <div class="modal-content confirm-content">
+        <div class="modal-header">
+          <h3 id="confirmTitle">确认</h3>
+          <button class="close-btn" id="closeConfirmModal">×</button>
+        </div>
+        <div class="modal-body">
+          <p id="confirmMessage">确定要执行此操作吗？</p>
+          <div class="confirm-actions">
+            <button class="btn-secondary" id="cancelConfirmBtn">取消</button>
+            <button class="btn-primary" id="okConfirmBtn">确定</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="data/points.js?v=1"></script>
+  <script src="js/editor.js?v=1"></script>
+</body>
+</html>
