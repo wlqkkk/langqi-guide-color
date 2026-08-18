@@ -600,9 +600,20 @@
       cardEl.className = 'story-card';
       const catColor = getCategoryColor(card.category);
       const cardImages = (card.images && card.images.length) ? card.images : (card.image ? [card.image] : []);
-      const imageHtml = cardImages
-        .map((src) => `<div class="story-image"><img src="${src}" alt="${card.title}" loading="lazy"></div>`)
-        .join('');
+      let imageHtml = '';
+      if (cardImages.length > 1) {
+        imageHtml = `
+          <div class="story-gallery">
+            <div class="gallery-track">
+              ${cardImages.map((src, i) => `<div class="story-image gallery-slide${i === 0 ? ' active' : ''}"><img src="${src}" alt="${card.title}"></div>`).join('')}
+            </div>
+            <button class="card-nav gallery-prev" aria-label="上一张图">‹</button>
+            <button class="card-nav gallery-next" aria-label="下一张图">›</button>
+            <div class="gallery-dots">${cardImages.map((_, i) => `<span class="gallery-dot${i === 0 ? ' active' : ''}"></span>`).join('')}</div>
+          </div>`;
+      } else if (cardImages.length === 1) {
+        imageHtml = `<div class="story-image"><img src="${cardImages[0]}" alt="${card.title}" loading="lazy"></div>`;
+      }
       cardEl.innerHTML = `
         ${imageHtml}
         <div class="story-header">
@@ -617,6 +628,23 @@
           <p>${card.story || ''}</p>
         </div>
       `;
+
+      // 图片轮播
+      const gallery = cardEl.querySelector('.story-gallery');
+      if (gallery) {
+        const slides = gallery.querySelectorAll('.gallery-slide');
+        const galleryDots = gallery.querySelectorAll('.gallery-dot');
+        let galleryIndex = 0;
+        const showImage = (i) => {
+          galleryIndex = (i + cardImages.length) % cardImages.length;
+          slides.forEach((s, si) => s.classList.toggle('active', si === galleryIndex));
+          galleryDots.forEach((d, di) => d.classList.toggle('active', di === galleryIndex));
+        };
+        gallery.querySelector('.gallery-prev').addEventListener('click', (e) => { e.stopPropagation(); showImage(galleryIndex - 1); });
+        gallery.querySelector('.gallery-next').addEventListener('click', (e) => { e.stopPropagation(); showImage(galleryIndex + 1); });
+        galleryDots.forEach((d, di) => d.addEventListener('click', (e) => { e.stopPropagation(); showImage(di); }));
+      }
+
       els.storyCardsTrack.appendChild(cardEl);
 
       const dot = document.createElement('button');

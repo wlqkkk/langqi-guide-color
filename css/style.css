@@ -1523,3 +1523,62 @@ html, body {
   color: #ff9e9e;
 }
 
+
+/* 图片轮播（多图卡片） */
+.story-gallery {
+  position: relative;
+  margin-bottom: 12px;
+}
+
+.story-gallery .gallery-slide {
+  display: none;
+  margin-bottom: 0;
+}
+
+.story-gallery .gallery-slide.active {
+  display: block;
+  animation: galleryFade 0.25s ease;
+}
+
+@keyframes galleryFade {
+  from { opacity: 0.3; }
+  to { opacity: 1; }
+}
+
+.story-gallery .card-nav {
+  width: 28px;
+  height: 28px;
+  font-size: 16px;
+  background: rgba(0, 0, 0, 0.35);
+  border: none;
+}
+
+.story-gallery .gallery-prev {
+  left: 8px;
+}
+
+.story-gallery .gallery-next {
+  right: 8px;
+}
+
+.story-gallery .gallery-dots {
+  position: absolute;
+  bottom: 8px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+}
+
+.story-gallery .gallery-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+}
+
+.story-gallery .gallery-dot.active {
+  background: #fff;
+}
