@@ -1,5 +1,5 @@
 :root {
-  --bg: #ffffff;
+  --bg: #C6DCE6;
   --surface: rgba(255, 255, 255, 0.96);
   --surface-light: rgba(0, 0, 0, 0.08);
   --border: rgba(0, 0, 0, 0.08);
@@ -56,7 +56,7 @@ html, body {
   align-items: center;
   padding: 12px 16px;
   padding-top: max(12px, env(safe-area-inset-top));
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.75));
+  background: linear-gradient(to bottom, rgba(198, 220, 230, 0.96), rgba(198, 220, 230, 0.75));
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
 }
@@ -102,7 +102,7 @@ html, body {
 }
 
 .top-actions button:hover {
-  background: rgba(0, 0, 0, 0.15);
+  background: rgba(0, 0, 0, 0.06);
 }
 
 .top-actions button:active {
@@ -151,7 +151,6 @@ html, body {
   padding: 8px 16px;
   border-radius: 20px;
   font-size: 13px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
   opacity: 0;
   transition: opacity 0.3s ease;
   pointer-events: none;
@@ -169,7 +168,7 @@ html, body {
   width: 100%;
   height: 100%;
   overflow: hidden;
-  background: #f2f2f2;
+  background: #B8D0DC;
   cursor: grab;
 }
 
@@ -292,7 +291,7 @@ html, body {
   font-size: 13px;
   font-weight: 500;
   color: #3d342b;
-  background: rgba(255, 255, 255, 0.94);
+  background: rgba(0, 0, 0, 0.94);
   border: 1px solid #3d342b;
   padding: 3px 8px;
   border-radius: 6px;
@@ -691,7 +690,7 @@ html, body {
   right: 0;
   bottom: 0;
   z-index: 300;
-  background: linear-gradient(135deg, #ffffff 0%, #eef0f2 100%);
+  background: #C6DCE6;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -978,7 +977,7 @@ html, body {
   height: 44px;
   border-radius: 50%;
   border: none;
-  background: rgba(255, 255, 255, 0.92);
+  background: rgba(0, 0, 0, 0.92);
   color: var(--text);
   font-size: 22px;
   cursor: pointer;
@@ -1008,7 +1007,7 @@ html, body {
 }
 
 .toast {
-  background: rgba(255, 255, 255, 0.96);
+  background: rgba(0, 0, 0, 0.96);
   color: var(--text);
   padding: 12px 24px;
   border-radius: 30px;

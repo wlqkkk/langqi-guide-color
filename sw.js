@@ -1,4 +1,4 @@
-const CACHE_NAME = 'langqi-guide-v1';
+const CACHE_NAME = 'langqi-guide-color-v1';
 const ASSETS = [
   './',
   './index.html',
