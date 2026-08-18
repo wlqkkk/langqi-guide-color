@@ -1,4 +1,4 @@
-const CACHE_NAME = 'langqi-guide-color-v2';
+const CACHE_NAME = 'langqi-guide-color-v3';
 const ASSETS = [
   './',
   './index.html',
@@ -24,7 +24,31 @@ const ASSETS = [
   './audio/p05.mp3',
   './audio/p06.mp3',
   './audio/p07.mp3',
-  './audio/p08.mp3'
+  './audio/p08.mp3',
+  './images/p09.jpg',
+  './images/p10.jpg',
+  './images/p11.jpg',
+  './images/p12.jpg',
+  './images/p13.jpg',
+  './images/p14.jpg',
+  './images/p15.jpg',
+  './images/p16.jpg',
+  './images/p17.jpg',
+  './images/p09-2.jpg',
+  './images/p11-2.jpg',
+  './images/p12-2.jpg',
+  './images/p12-3.jpg',
+  './images/p14-2.jpg',
+  './images/p17-2.jpg',
+  './audio/p09.mp3',
+  './audio/p10.mp3',
+  './audio/p11.mp3',
+  './audio/p12.mp3',
+  './audio/p13.mp3',
+  './audio/p14.mp3',
+  './audio/p15.mp3',
+  './audio/p16.mp3',
+  './audio/p17.mp3'
 ];
 
 self.addEventListener('install', (event) => {

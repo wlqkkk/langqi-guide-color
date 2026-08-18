@@ -589,20 +589,27 @@
     els.storyCardsTrack.innerHTML = '';
     els.cardDots.innerHTML = '';
 
+    // 只有一张卡片时隐藏翻页按钮和圆点
+    const hasMultipleCards = cards.length > 1;
+    if (els.cardPrev) els.cardPrev.style.display = hasMultipleCards ? '' : 'none';
+    if (els.cardNext) els.cardNext.style.display = hasMultipleCards ? '' : 'none';
+    els.cardDots.style.display = hasMultipleCards ? '' : 'none';
+
     cards.forEach((card, index) => {
       const cardEl = document.createElement('div');
       cardEl.className = 'story-card';
       const catColor = getCategoryColor(card.category);
-      const imageHtml = card.image
-        ? `<div class="story-image"><img src="${card.image}" alt="${card.title}" loading="lazy"></div>`
-        : '';
+      const cardImages = (card.images && card.images.length) ? card.images : (card.image ? [card.image] : []);
+      const imageHtml = cardImages
+        .map((src) => `<div class="story-image"><img src="${src}" alt="${card.title}" loading="lazy"></div>`)
+        .join('');
       cardEl.innerHTML = `
         ${imageHtml}
         <div class="story-header">
           <div class="story-title-row">
             <span class="story-category" style="background-color:${catColor}33;color:${catColor}">${getCategoryName(card.category)}</span>
           </div>
-          <h2>${card.title}<span class="card-page">${index + 1}/${cards.length}</span></h2>
+          <h2>${card.title}${hasMultipleCards ? `<span class="card-page">${index + 1}/${cards.length}</span>` : ''}</h2>
           <div class="story-area">${card.area || ''}</div>
         </div>
         <div class="story-body">
