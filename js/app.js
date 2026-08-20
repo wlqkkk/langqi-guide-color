@@ -41,6 +41,7 @@
     mapWrapper: document.getElementById('mapWrapper'),
     mapImage: document.getElementById('mapImage'),
     mapLoading: document.getElementById('mapLoading'),
+    mapHint: document.getElementById('mapHint'),
     hotspotsLayer: document.getElementById('hotspotsLayer'),
     storySheet: document.getElementById('storySheet'),
     storyCards: document.getElementById('storyCards'),
@@ -1089,6 +1090,14 @@
     window.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('mouseup', handleMouseUp);
     els.mapContainer.addEventListener('wheel', handleWheel, { passive: false });
+
+    // 横屏地图提示：首次滑动/点击后隐藏
+    const hideMapHint = () => {
+      if (els.mapHint) els.mapHint.classList.add('hide');
+    };
+    els.mapContainer.addEventListener('touchstart', hideMapHint, { once: true });
+    els.mapContainer.addEventListener('mousedown', hideMapHint, { once: true });
+    els.mapContainer.addEventListener('wheel', hideMapHint, { once: true });
 
     // 故事卡片按钮
     els.checkInBtn.addEventListener('click', checkIn);
