@@ -644,6 +644,26 @@
         gallery.querySelector('.gallery-prev').addEventListener('click', (e) => { e.stopPropagation(); showImage(galleryIndex - 1); });
         gallery.querySelector('.gallery-next').addEventListener('click', (e) => { e.stopPropagation(); showImage(galleryIndex + 1); });
         galleryDots.forEach((d, di) => d.addEventListener('click', (e) => { e.stopPropagation(); showImage(di); }));
+
+        // 左右滑动切换图片（阻止冒泡，避免触发地图拖拽/缩放）
+        let swipeStartX = 0;
+        let swipeStartY = 0;
+        gallery.addEventListener('touchstart', (e) => {
+          e.stopPropagation();
+          swipeStartX = e.touches[0].clientX;
+          swipeStartY = e.touches[0].clientY;
+        }, { passive: true });
+        gallery.addEventListener('touchmove', (e) => {
+          e.stopPropagation();
+        }, { passive: true });
+        gallery.addEventListener('touchend', (e) => {
+          e.stopPropagation();
+          const dx = e.changedTouches[0].clientX - swipeStartX;
+          const dy = e.changedTouches[0].clientY - swipeStartY;
+          if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+            showImage(galleryIndex + (dx < 0 ? 1 : -1));
+          }
+        });
       }
 
       els.storyCardsTrack.appendChild(cardEl);
